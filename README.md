@@ -1,3 +1,2 @@
 # yckt-theme
-edx-主题
-aaa
+edx lms and cms-主题 
