@@ -1,0 +1,32 @@
+<%page expression_filter="h"/>
+<%inherit file="../main.html" />
+<%namespace name='static' file='../static_content.html'/>
+<%!
+from django.urls import reverse
+from django.utils.translation import ugettext as _
+%>
+<%block name="pagetitle">${_("Harvard ManageMentor")}</%block>
+<style>
+  body{
+    overflow: hidden;
+  }
+  .window-wrap .content-wrapper{
+    padding: 0;
+  }
+  .my-footer{
+    display: none;
+  }
+  .iframe-outer{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 60px;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+  }
+</style>
+<div class="iframe-outer">
+<iframe style="width: 100%; height: 100%; border: none; " allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="${ reverse('elitemba:hmm_entry') }"></iframe>
+</div>
+

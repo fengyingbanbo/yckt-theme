@@ -1,0 +1,108 @@
+<%page expression_filter="h"/>
+<%!
+from django.utils.translation import ugettext as _
+
+from openedx.core.djangolib.js_utils import js_escaped_string
+%>
+<%inherit file="../main.html" />
+
+<%block name="pagetitle">${_(u"Manual")}</%block>
+<div class="manu-container">
+    <div class="manual-tabs"></div>
+    <div class="manual-content">
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To know more about courses')}</h3>
+            <div class="ques-answer">
+                ${_(u'Click the course to view the course introduction video, browse the course introduction, instructor introduction and course outline, etc.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To join as a member')}</h3>
+            <div class="ques-answer">
+                ${_(u'Enter "Membership" page, choose your learning duration and payment method. After payment is completed, you can enjoy learning all courses on EliteMBA during the study period.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To view the end-date of membership')}</h3>
+            <div class="ques-answer">
+                ${_(u'Enter "Membership" page to view the VIP open date and remaining days.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To enroll as a member')}</h3>
+            <div class="ques-answer">
+                ${_(u'Enter "Discover New" page, click the course or search key words to select courses you are interested in, click "Free Enrollment for VIP" button, then the enrollment is fulfilled.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To purchase a course')}</h3>
+            <div class="ques-answer">
+                ${_(u'Enter "Discover New" page, click the course or search key words to select courses you are interested in, click "Enroll" button, then you can start learning after payment is completed.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To start a course')}</h3>
+            <div class="ques-answer">
+                ${_(u'Click your avatar in the upper right corner of the page, enter "Dashboard" to view the course introduction, watch videos and complete assignments.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To participate in discussion')}</h3>
+            <div class="ques-answer">
+                ${_(u'Enter "Dashboard - View Course" page, click "Discussion". You can view discussions, engage with posts and receive updates.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'To view and download handouts')}</h3>
+            <div class="ques-answer">
+                ${_(u'Enter "Dashboard - View Course" page, find "Course Handouts" on the right side. You can view handout content and download.')}
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'How do I change or reset my password?')}</h3>
+            <div class="ques-answer">
+                <h4>${_(u'To change your password')}</h4>
+                <p>${_(u'1. At the top of any page, select the dropdown menu icon next to your username.')}</p>
+                <p>${_(u'2. Select "Account".')}</p>
+                <p>${_(u'3. Select "Reset Password".')}</p>
+                <p style="margin-left: 16px;">${_(u'The system sends a confirmation message to the email address in the "Email Address" field.')}</p>
+                <p>${_(u'4. Select the confirmation link in the email message.')}</p>
+                <h4>${_(u'Passwords must contain:')}</h4>
+                <ul>
+                    <li>${_(u'At least 6 characters')}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="manual-block" style="display: none">
+            <h3 class="ques-title">${_(u'How do I change my email address?')}</h3>
+            <div class="ques-answer">
+                <p>${_(u'You can change your email address on any site page. You use your email address to sign in to your account. In addition, communications from your course teams are sent to this address.')}</p>
+                <h4>${_(u'To change your email address')}</h4>
+                <p>${_(u'1. At the top of any page, select the dropdown menu icon next to your username;')}</p>
+                <p>${_(u'2. Select "Account";')}</p>
+                <p>${_(u'3. In the "Email Address" field, select your current email address and replace it with the new address;')}</p>
+                <p>${_(u'4. To save your changes, click anywhere on the page outside of the "Email Address" field, or navigate to a different page.')}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   function showBlock(index){
+    $('.manual-tab')[active].classList.remove('manual-tab-active');
+    $('.manual-block')[active].style.display = 'none';
+
+    $('.manual-tab')[index].classList.add('manual-tab-active');
+    $('.manual-block')[index].style.display = 'block';
+
+    active = index;
+  }
+  var active = 0;
+  var tab = [];
+  $('.manual-block').map(function(index, item){
+    tab.push('<div class="manual-tab" onclick="showBlock(' + index + ')">' + $(item).find('.ques-title').html() + '</div>');
+    return item;
+  });
+    $('.manual-tabs')[0].innerHTML = tab.join('');
+    $('.manual-block')[active].style.display = 'block';
+    $('.manual-tab')[active].classList.add('manual-tab-active');
+</script>
