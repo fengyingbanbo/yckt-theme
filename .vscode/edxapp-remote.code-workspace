@@ -1,0 +1,11 @@
+{
+    "folders": [
+        {
+            "path": "/my-open-edx-themes/edx-platform/yckt-theme"
+        }
+    ],
+    "settings": {
+        "python.pythonPath": "/edx/app/edxapp/venvs/edxapp/bin/python",
+        "python.linting.pylintEnabled": true
+    }
+}

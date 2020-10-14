@@ -1,57 +1,5 @@
 <div class="js-form-feedback" aria-live="assertive" tabindex="-1">
 </div>
-<style>
-    .tabs{
-        text-align: center;
-    }
-    .tabs span{
-        display: inline-block;
-        width: 30%;
-        text-align: center;
-        cursor: pointer;
-    }
-    .tabs .tabs-line{
-        color: #e6e9ed;
-    }
-    .tab-active{
-        color: #4788C7;
-    }
-    #scan{
-        text-align: center;
-        padding: 25px 0;
-        line-height: 1.5;
-
-    }
-    #scan span{
-        color: #4788C7;
-        padding: 0 5px;
-    }
-    .qrcode-container{
-        position: relative;
-        width: 152px;
-        margin: 0 auto;
-    }
-    #qrcode img{
-        padding: 10px;
-        border: 1px solid #ccd1d9;
-        border-radius: 4px;
-        margin: 0 auto 20px;
-    }
-    #refresh {
-        width: 100%;
-        height: 152px;
-        border-radius: 4px;
-        color: #fff;
-        background: rgba(0, 0, 0, 0.5);
-        text-align: center;
-        position: absolute;
-        top: 0;
-        left: 0;
-        box-sizing: border-box;
-        padding: 35px;
-    }
-
-</style>
 
 <% if ( context.createAccountOption !== false && !context.syncLearnerProfileData && !(context.enterpriseName && context.currentProvider) ) { %>
 <div class="toggle-form">
@@ -68,7 +16,7 @@
         <h2><%- gettext("Sign in to continue learning") %></h2>
     <% } %>
     <p>
-        <%- gettext("You already have an EliteMBA account with your {enterprise_name} email address.").replace(/{enterprise_name}/g, context.enterpriseName) %>
+        <%- gettext("You already have an edX account with your {enterprise_name} email address.").replace(/{enterprise_name}/g, context.enterpriseName) %>
         <% if (context.syncLearnerProfileData) {
             %><%- gettext("Going forward, your account information will be updated and maintained by {enterprise_name}.").replace(/{enterprise_name}/g, context.enterpriseName) %>
         <% } %>
@@ -76,14 +24,10 @@
     </p>
     <p><%- gettext("To continue learning with this account, sign in below.") %></p>
 <% } else { %>
-    <h2 class="tabs">
-        <span id="tab-login" class="tab-active"><%- gettext("Sign In") %></span>
-        <b class="tabs-line">|</b>
-        <span id="tab-scan">扫码登录</span>
-    </h2>
+    <h2><%- gettext("Sign In") %></h2>
 <% } %>
 
-<form id="login" class="login-form" autocomplete="off" tabindex="-1" method="POST" style="display:block">
+<form id="login" class="login-form" tabindex="-1" method="POST">
 
     <p class="sr">
         <% if ( context.providers.length > 0 && !context.currentProvider || context.hasSecondaryProviders ) { %>
@@ -94,11 +38,23 @@
         <%- gettext("If you do not yet have an account, use the button below to register.") %>
     </p>
 
-    <%= context.fields %>
+    <% if ( context.hasSecondaryProviders ) { %>
+        <button type="button" class="button-secondary-login form-toggle" data-type="institution_login">
+            <%- gettext("Use my university info") %>
+        </button>
 
-    <button type="submit" class="action action-primary action-update js-login login-button" onclick="ga('send', 'event', 'login', 'click', 'start_login');"><%- gettext("Sign in") %></button>
+        <div class="section-title lines">
+            <h3>
+                <span class="text"><%- gettext("or sign in with") %></span>
+            </h3>
+        </div>
+    <% } %>
 
-    <% if ( context.providers.length > 0 && !context.currentProvider || context.hasSecondaryProviders ) { %>
+    <%= HtmlUtils.HTML(context.fields) %>
+
+    <button type="submit" class="action action-primary action-update js-login login-button"><%- gettext("Sign in") %></button>
+
+    <% if ( context.providers.length > 0 && !context.currentProvider) { %>
     <div class="login-providers">
         <div class="section-title lines">
             <h3>
@@ -119,95 +75,7 @@
                 </button>
             <% }
         }); %>
-
-        <% if ( context.hasSecondaryProviders ) { %>
-            <button type="button" class="button-secondary-login form-toggle" data-type="institution_login">
-                <%- gettext("Use my institution/campus credentials") %>
-            </button>
-        <% } %>
     </div>
     <% } %>
 </form>
 
-<div id="scan" style="display: none">
-    <div class="qrcode-container">
-        <div id="qrcode"></div>
-        <div id="refresh" style="display:none">
-            二维码失效
-            <button class="action-primary" onClick="refreshQrcode()">刷新</button>
-        </div>
-    </div>
-    <div>打开<span>英荔商学院</span>APP</div>
-    <div>在「我的」打开扫一扫</div>
-</div>
-
-
-<script>
-    var tab_login = document.getElementById('tab-login');
-    var tab_scan = document.getElementById('tab-scan');
-    var login = document.getElementById('login');
-    var scan = document.getElementById('scan');
-
-
-    tab_login.onclick = function() {
-        tab_login.classList = 'tab-active';
-        tab_scan.classList = '';
-        scan.style.display = 'none';
-        login.style.display = 'block';
-    }
-
-
-    var timer = null;
-
-    function getQrcode() {
-        document.getElementById('qrcode').innerHTML = '';
-        timer && clearInterval(timer);
-        timer = null;
-        $.ajax({
-            url: '/elitemba/api/v1/get_qr_code/',
-            type: 'GET',
-            success: function(res) {
-                if (res.code === 200) {
-                    var qrcode = new QRCode(document.getElementById('qrcode'), {
-                        text: res.data.login_by_QRcode_url,
-                        width: 130,
-                        height: 130,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
-                    });
-                    timer = setInterval(function() {
-                        $.ajax({
-                            url: '/elitemba/api/v1/return__qr_code_status/?lms_login_qrcode=' + res.data.lms_login_qrcode,
-                            type: 'GET',
-                            success: function(res) {
-                                if(res.code === 200) {
-                                    window.location.href = '/';
-                                } else if (res.code === 404){
-                                    // 过期
-                                    clearInterval(timer);
-                                    document.getElementById('refresh').style.display = 'block';
-                                }
-                            },
-                        })
-                    }, 1000)
-                }
-            }
-        })
-    }
-
-    function refreshQrcode(){
-        document.getElementById('refresh').style.display = 'none';
-        getQrcode();
-    }
-
-    tab_scan.onclick = function() {
-        tab_scan.classList = 'tab-active';
-        tab_login.classList = '';
-        login.style.display = 'none';
-        scan.style.display = 'block';
-
-        getQrcode();
-    }
-</script>
-<script src="/static/yckt-theme/js/certificates/qrcode.js"></script>

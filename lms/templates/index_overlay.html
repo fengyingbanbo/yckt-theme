@@ -4,8 +4,6 @@
 from django.utils.translation import ugettext as _
 from openedx.core.djangolib.markup import HTML, Text
 %>
-
+<p > ${Text(_(u"学海无涯、唯勤是岸--永昌课堂")).format(platform_name=settings.PLATFORM_NAME)}</p>
 ## Translators: 'Open edX' is a registered trademark, please keep this untranslated. See http://open.edx.org for more information.
-<h1>${_(u"Learn to Change · Change to Improve —— EliteMBA")}</h1>
-## Translators: 'Open edX' is a registered trademark, please keep this untranslated. See http://open.edx.org for more information.
-<p>${_(u"Enjoy high-value MBA curriculum with ￥99.84 monthly payment!")}</p>
+<h1>${Text(_("我的职业课堂")).format(registered_trademark=HTML("<sup style='font-size: 65%'>&reg;</sup>"))}</h1>

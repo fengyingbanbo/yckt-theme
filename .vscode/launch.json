@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Remote Attach to Theme",
+            "type": "python",
+            "request": "attach",
+            "port": 5687,
+            "host": "localhost",
+            "pathMappings": [
+                {
+                    "localRoot": "/my-open-edx-themes/edx-platform/yckt-theme",
+                    "remoteRoot": "/my-open-edx-themes/edx-platform/yckt-theme"
+                }
+            ]
+        } 
+    ]
+}

@@ -150,7 +150,7 @@ from six import string_types
               <a href="${course_target}">
             %endif
 
-            <span class="register disabled">${_("Enrolled")}</span>
+            <span class="register disabled">已报名</span>
           
             %if show_courseware_link:
               <strong>${_("View Course")}</strong>
@@ -225,7 +225,7 @@ from six import string_types
               %if registration_price > 0:
                   ${_("Enroll {price}").format(price=course_price)}
               %else:
-                  ${pgettext("Free Enroll Course", "Enroll")}
+                免费报名
               %endif
             </a>
             <div id="register_error"></div>
@@ -265,11 +265,11 @@ from six import string_types
 
       <div class="inner-wrapper">
         <!-- add vip adver -->
-        <div id="vip" style="display: none"></div>
+        <!-- <div id="vip" style="display: none"></div> -->
         <div class="about-tabs">
-          <span class="about-tab about-tab-active" onClick="showTab('about-info', 0)">${pgettext("CourseAbout", "Description")}</span>
-          <span class="about-tab" onClick="showTab('about-staff', 1)">${pgettext("CourseAbout", "Instructor")}</span>
-          <span class="about-tab" onClick="showTab('about-outline', 2)">${pgettext("CourseAbout", "Outline")}<span>
+          <span class="about-tab about-tab-active" onClick="showTab('about-info', 0)">课程简介</span>
+          <span class="about-tab" onClick="showTab('about-staff', 1)">课程导师</span>
+          <span class="about-tab" onClick="showTab('about-outline', 2)">课程大纲<span>
         </div>
         ${get_course_about_section(request, course, "overview")}
       </div>
@@ -298,7 +298,7 @@ from six import string_types
       <script src="//oss.elitemba.cn/gtm/membership.js"></script>
 
       <!-- video player-->
-      <link href="${static.url('yckt-theme/css/imgcache-qq-tcplayer.css')}" rel="stylesheet">
+      <link href="${static.url('elitemba-theme/css/imgcache-qq-tcplayer.css')}" rel="stylesheet">
       <script src="${static.url('js/imgcache-qq-tcplayer-min.js')}"></script>
       <div class="about-cover" onclick="closeVideo()" style="display: none">
         <span class="fa-my fa-my-close"></span>
